@@ -46,12 +46,16 @@ const App = () => {
       <Button handleClick={incrementGood} text="good" />
       <Button handleClick={incrementNeutral} text="neutral" />
       <Button handleClick={incrementBad} text="bad" />
-      <Statistics
-        good={good}
-        neutral={neutral}
-        bad={bad}
-        allFeedback={allFeedback}
-      />
+      { allFeedback?
+        <Statistics
+          good={good}
+          neutral={neutral}
+          bad={bad}
+          allFeedback={allFeedback}
+        /> :
+        <p>No feedback given</p>
+      }
+
     </div>
   );
 };
