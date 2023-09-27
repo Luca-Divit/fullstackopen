@@ -5,40 +5,57 @@ const Button = ({handleClick, text}) => {
   return <button onClick={handleClick}>{text}</button>;
 };
 
-const Statistics = ({good, neutral, bad, allFeedback}) => {
+const StatisticLine = ({text, value}) => <p>{text} {value}</p>;
+
+const Statistics = ({good, neutral, bad, allFeedback, average, positive}) => {
   // console.log(props)
   return (
     <>
       <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>average {allFeedback ? (good - bad) / allFeedback : 0}</p>
-      <p>positive {good ? good / allFeedback * 100 + "%" : 0}</p>
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="all" value={allFeedback} />
+      <StatisticLine text="average" value={average} />
+      <StatisticLine text="positive" value={positive} />
     </>
-  )
-}
+  );
+};
 
 const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
   const [allFeedback, setAll] = useState(0);
+  const [average, setAverage] = useState(0);
+  const [positive, setPositive] = useState(0);
 
   const incrementGood = () => {
-    setGood(good + 1);
-    setAll(allFeedback + 1);
-  }
+    const newGood = good + 1
+    const newAll = allFeedback + 1
+    setGood(newGood);
+    setAll(newAll);
+    setAverage((newGood - bad) / newAll);
+    setPositive(newGood / newAll * 100);
+  };
 
   const incrementNeutral = () => {
-    setNeutral(neutral + 1);
-    setAll(allFeedback + 1);
-  }
+    const newNeutral = neutral + 1
+    const newAll = allFeedback + 1
+    setNeutral(newNeutral);
+    setAll(newAll);
+    setAverage((good - bad) / newAll);
+    setPositive(good / newAll * 100);
+  };
 
   const incrementBad = () => {
-    setBad(bad + 1);
-    setAll(allFeedback + 1);
-  }
+    const newBad = bad + 1
+    const newAll = allFeedback + 1
+    setBad(newBad);
+    setAll(newAll);
+    setAverage((good - newBad) / newAll);
+    setPositive(good / newAll * 100);
+  };
 
   return (
     <div>
@@ -52,6 +69,8 @@ const App = () => {
           neutral={neutral}
           bad={bad}
           allFeedback={allFeedback}
+          average={average}
+          positive={positive}
         /> :
         <p>No feedback given</p>
       }
