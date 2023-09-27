@@ -5,6 +5,20 @@ const Button = ({handleClick, text}) => {
   return <button onClick={handleClick}>{text}</button>;
 };
 
+const Statistics = ({good, neutral, bad, allFeedback}) => {
+  // console.log(props)
+  return (
+    <>
+      <h1>statistics</h1>
+      <p>good {good}</p>
+      <p>neutral {neutral}</p>
+      <p>bad {bad}</p>
+      <p>average {allFeedback ? (good - bad) / allFeedback : 0}</p>
+      <p>positive {good ? good / allFeedback * 100 + "%" : 0}</p>
+    </>
+  )
+}
+
 const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
@@ -32,12 +46,12 @@ const App = () => {
       <Button handleClick={incrementGood} text="good" />
       <Button handleClick={incrementNeutral} text="neutral" />
       <Button handleClick={incrementBad} text="bad" />
-      <h1>statistics</h1>
-      <p>good {good}</p>
-      <p>neutral {neutral}</p>
-      <p>bad {bad}</p>
-      <p>average {allFeedback ? (good - bad) / allFeedback : 0}</p>
-      <p>positive {good ? good / allFeedback * 100 + "%" : 0}</p>
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        allFeedback={allFeedback}
+      />
     </div>
   );
 };
