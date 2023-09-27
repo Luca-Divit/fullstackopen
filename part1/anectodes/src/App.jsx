@@ -12,21 +12,31 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ];
 
-  const points = new Uint8Array(7);
-
+  const [points, setPoints] = useState(new Uint8Array(8));
   const [selected, setSelected] = useState(0);
 
-  const handleClick = () => {
+  const nextAnecdote = () => {
     const newValue = Math.round(Math.random()*(anecdotes.length - 1));
     // console.log(newValue)
     setSelected(newValue);
   };
 
+  const upvote = (which) => {
+    // console.log(which)
+    const copy = [...points];
+    // console.log('before incrementing', copy)
+    copy[which] += 1;
+    // console.log('after incrementing', copy)
+    setPoints(copy)
+  };
+
   return (
     <div>
-      {anecdotes[selected]}
-      <br />
-      <button onClick={handleClick}>next anecdote</button>
+      <h1>Anecdote of the day</h1>
+      <p>{anecdotes[selected]}</p>
+      <p>has {points[selected]} votes</p>
+      <button onClick={() => upvote(selected)}>vote</button>
+      <button onClick={nextAnecdote}>next anecdote</button>
     </div>
   );
 };
