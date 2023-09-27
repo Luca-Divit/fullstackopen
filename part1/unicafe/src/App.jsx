@@ -5,19 +5,30 @@ const Button = ({handleClick, text}) => {
   return <button onClick={handleClick}>{text}</button>;
 };
 
-const StatisticLine = ({text, value}) => <p>{text} {value}</p>;
+const StatisticLine = ({text, value, percent}) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{percent ? value + ' %' : value}</td>
+    </tr>
+  )
+};
 
 const Statistics = ({good, neutral, bad, allFeedback, average, positive}) => {
   // console.log(props)
   return (
     <>
       <h1>statistics</h1>
-      <StatisticLine text="good" value={good} />
-      <StatisticLine text="neutral" value={neutral} />
-      <StatisticLine text="bad" value={bad} />
-      <StatisticLine text="all" value={allFeedback} />
-      <StatisticLine text="average" value={average} />
-      <StatisticLine text="positive" value={positive} />
+      <table>
+        <tbody>
+          <StatisticLine text="good" value={good} />
+          <StatisticLine text="neutral" value={neutral} />
+          <StatisticLine text="bad" value={bad} />
+          <StatisticLine text="all" value={allFeedback} />
+          <StatisticLine text="average" value={average} />
+          <StatisticLine text="positive" value={positive} percent={true}/>
+        </tbody>
+      </table>
     </>
   );
 };
