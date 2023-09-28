@@ -1,20 +1,23 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas' }
-  ])
-  const [newName, setNewName] = useState('')
+  ]);
+  const [newName, setNewName] = useState('');
 
   const handleChange = (e) => {
-    setNewName(e.target.value)
-  }
+    setNewName(e.target.value);
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    const name = { name: newName }
-    setPersons(persons.concat(name))
-    setNewName('')
+    e.preventDefault();
+    const name = { name: newName };
+    if (persons.find(p => p.name === newName)) {
+      return alert(`${newName} is already added to the phonebook`);
+    }
+    setPersons(persons.concat(name));
+    setNewName('');
   }
 
   return (
@@ -31,7 +34,7 @@ const App = () => {
       <h2>Numbers</h2>
         {persons.map(p => <div key={p.name}>{p.name}</div>)}
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
