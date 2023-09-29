@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Filter from "./components/Filter";
 import PersonsForm from "./components/PersonsForm";
-import Persons from "./components/Persons";
-import personService from './services/persons'
+import Person from "./components/Person";
+import personService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -28,14 +28,14 @@ const App = () => {
   };
 
   const handleSearch = (e) => {
-    const input = e.target.value
+    const input = e.target.value;
     setSearch(input);
     // console.log(input);
   };
 
   const newPersonsList = persons.filter(p => {
-    return p.name.slice(0,search.length).toLowerCase() === search
-  })
+    return p.name.slice(0,search.length).toLowerCase() === search;
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,7 +47,17 @@ const App = () => {
       .then(addedPerson => setPersons(persons.concat(addedPerson)));
     setNewName('');
     setNewNumber('');
+  };
+
+  const handleDelete = (person) => {
+    if (personService.destroy(person)) {
+      setPersons(persons.filter(p => p.id !== person.id))
+    }
   }
+
+  const personList = search ?
+      newPersonsList.map(p => <Person key={p.id} p={p} handleDelete={() => handleDelete(p)}/>) :
+      persons.map(p => <Person key={p.id} p={p} handleDelete={() => handleDelete(p)} />)
 
   return (
     <div>
@@ -62,11 +72,7 @@ const App = () => {
         handleChangeNumber={handleChangeNumber}
       />
       <h2>Numbers</h2>
-      <Persons
-        search={search}
-        persons={persons}
-        newPersonsList={newPersonsList}
-        />
+      {personList}
     </div>
   );
 };
