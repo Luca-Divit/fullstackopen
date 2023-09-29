@@ -40,18 +40,27 @@ const App = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const nameAndNumber = { name: newName, number: newNumber };
-    if (persons.find(p => p.name === newName)) {
-      return alert(`${newName} is already added to the phonebook`);
-    }
-    personService.create(nameAndNumber)
+    const existingPerson = persons.find(p => p.name === newName);
+    if (existingPerson) {
+      if (confirm(`Do you really want to update ${existingPerson.name} phone number?`)) {
+        const updatedPerson = { ...existingPerson, ...nameAndNumber};
+        personService.update(updatedPerson)
+          .then(personBack => {
+            setPersons(persons.map(p => p.id !== personBack.id ? p : personBack ))
+          })
+      }
+    } else {
+      personService.create(nameAndNumber)
       .then(addedPerson => setPersons(persons.concat(addedPerson)));
-    setNewName('');
-    setNewNumber('');
+      setNewName('');
+      setNewNumber('');
+    }
   };
 
   const handleDelete = (person) => {
-    if (personService.destroy(person)) {
-      setPersons(persons.filter(p => p.id !== person.id))
+    if (confirm(`Do you really want to remove ${person.name}?`)) {
+      personService.destroy(person)
+        setPersons(persons.filter(p => p.id !== person.id))
     }
   }
 
