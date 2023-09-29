@@ -15,4 +15,11 @@ const create = newNote => {
     return request.then(response => response.data);
 };
 
-export default { getAll, create };
+const destroy = (p) => {
+  if (confirm(`Do you really want to destroy ${p.name}?`)) {
+    const request = axios.delete(`${baseUrl}/${p.id}`)
+    return request.then(response => response.status)
+  }
+}
+
+export default { getAll, create, destroy };
