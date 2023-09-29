@@ -12,3 +12,13 @@ h2 {
   padding: 12px;
   margin-bottom: 12px;
 }
+
+.error {
+  border: 5px solid red;
+  border-radius: 8px;
+  background-color: lightgray;
+  font-size: 28px;
+  color: red;
+  padding: 12px;
+  margin-bottom: 12px;
+}
