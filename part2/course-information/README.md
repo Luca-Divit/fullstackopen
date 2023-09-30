@@ -1,1 +1,1 @@
-Exercise course-infor part2
+Exercise course-info part2
