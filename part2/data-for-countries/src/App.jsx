@@ -25,14 +25,38 @@ const App = () => {
     setCountries(filteredCountries);
   }
 
-  return (
-    <div>
-      <input value={search} onChange={handleChange} />
-      {countries.length < 11 ?
+  const handleDisplay = (places) => {
+    if (places.length === 1) {
+      // const l = places[0]
+      // console.log(places[0]);
+      // debugger
+      return (
+        <div>
+          <h1>{places[0].name.common}</h1>
+          <div>Capital: {places[0].capital.map((c, i) => <span key={i}>{c}</span>)}</div>
+          <div>Area: {places[0].area}</div>
+          <h3>Languages</h3>
+          <ul>
+            {Object.values(places[0].languages).map((lang, i) => <li key={i}>{lang}</li>)}
+          </ul>
+          <img src={places[0].flags.png} alt={`${places[0].name.common} flag`} />
+        </div>
+      )
+    } else if (countries.length < 11) {
+      return (
         <ul>
           {countries.map((c,i) => <li key={i}>{c.name.common}</li>)}
-        </ul> :
-        <p>Too many countries specify more</p>
+        </ul>
+      )
+    }
+  }
+
+  return (
+    <div>
+      <p>find coutries <input value={search} onChange={handleChange} /></p>
+      {countries.length < 11 ?
+        handleDisplay(countries) :
+        <p>Too many matches, specify another filter</p>
       }
 
     </div>
