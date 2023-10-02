@@ -33,16 +33,17 @@ const App = () => {
 
   const handleDisplay = (places) => {
     if (places.length === 1) {
+      const place = places[0]
       return (
         <div>
-          <h1>{places[0].name.common}</h1>
-          <div>Capital: {places[0].capital.map((c, i) => <span key={i}>{c}</span>)}</div>
-          <div>Area: {places[0].area}</div>
+          <h1>{place.name.common}</h1>
+          <div>Capital: {place.capital.map((c, i) => <span key={i}>{c}</span>)}</div>
+          <div>Area: {place.area}</div>
           <h3>Languages</h3>
           <ul>
-            {Object.values(places[0].languages).map((lang, i) => <li key={i}>{lang}</li>)}
+            {Object.values(place.languages).map((lang, i) => <li key={i}>{lang}</li>)}
           </ul>
-          <img src={places[0].flags.png} alt={`${places[0].name.common} flag`} />
+          <img src={place.flags.png} alt={`${place.name.common} flag`} />
         </div>
       )
     }
