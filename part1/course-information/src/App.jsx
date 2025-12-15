@@ -1,3 +1,5 @@
+import Courses from "./components/Courses";
+
 const App = () => {
   // First part using variables
   // const course = "Half Stack application development";
@@ -94,51 +96,7 @@ const App = () => {
     },
   ];
 
-  const Header = ({ course }) => {
-    // console.log(course);
-    return <h1>{course.name}</h1>;
-  };
-
-  const Part = ({ name, exercises }) => {
-    // console.log(name, exercises);
-    return (
-      <p>
-        {name} {exercises}
-      </p>
-    );
-  };
-
-  const Content = ({ course }) => {
-    // console.log(course.parts);
-    return course.parts.map((part) => {
-      return (
-        <Part key={part.name} name={part.name} exercises={part.exercises} />
-      );
-    });
-  };
-
-  const Total = ({ course }) => {
-    // console.log(course.parts);
-    const totalNumberOfExercises = course.parts.reduce((sum, part) => {
-      // console.log('sum:', sum, 'part:', part.exercises)
-      return (sum += part.exercises);
-    }, 0);
-    return <b>Number of exercises {totalNumberOfExercises}</b>;
-  };
-
-  return (
-    <div>
-      {courses.map((course) => {
-        return (
-          <>
-            <Header course={course} />
-            <Content course={course} />
-            <Total course={course} />
-          </>
-        );
-      })}
-    </div>
-  );
+  return <Courses courses={courses} />;
 };
 
 export default App;
