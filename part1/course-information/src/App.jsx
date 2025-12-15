@@ -41,37 +41,41 @@ const App = () => {
         name: "State of a component",
         exercises: 14,
       },
+      {
+        name: "Redux",
+        exercises: 11,
+      },
     ],
   };
 
-  const Header = (props) => {
-    // console.log(props);
-    return <h1>{props.course.name}</h1>;
+  const Header = ({course}) => {
+    // console.log(course);
+    return <h1>{course.name}</h1>;
   };
 
-  const Part = (props) => {
-    // console.log(props);
+  const Part = ({name, exercises}) => {
+    // console.log(name, exercises);
     return (
       <p>
-        {props.name} {props.exercises}
+        {name} {exercises}
       </p>
     );
   };
 
-  const Content = (props) => {
-    // console.log(props.course.parts);
-    return props.course.parts.map((part) => {
+  const Content = ({course}) => {
+    // console.log(course.parts);
+    return course.parts.map((part) => {
       return (
         <Part key={part.name} name={part.name} exercises={part.exercises} />
       );
     });
   };
 
-  const Total = (props) => {
-    // console.log(props);
+  const Total = ({course}) => {
+    // console.log(course);
     let totalNumberOfExercises = 0;
-    for (let i = 0; i < props.course.parts.length; i++) {
-      totalNumberOfExercises += props.course.parts[i].exercises;
+    for (let i = 0; i < course.parts.length; i++) {
+      totalNumberOfExercises += course.parts[i].exercises;
     }
     return <p>Number of exercises {totalNumberOfExercises}</p>;
   };
