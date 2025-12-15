@@ -72,11 +72,11 @@ const App = () => {
   };
 
   const Total = ({course}) => {
-    // console.log(course);
-    let totalNumberOfExercises = 0;
-    for (let i = 0; i < course.parts.length; i++) {
-      totalNumberOfExercises += course.parts[i].exercises;
-    }
+    // console.log(course.parts);
+    const totalNumberOfExercises = course.parts.reduce((sum, part) => {
+      // console.log('sum:', sum, 'part:', part.exercises)
+      return sum += part.exercises
+    }, 0)
     return <p>Number of exercises {totalNumberOfExercises}</p>;
   };
 
