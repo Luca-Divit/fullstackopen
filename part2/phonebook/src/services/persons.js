@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base url for all the api calls
-const baseUrl = "/api/phonebook";
+const baseUrl = "http://localhost:3001/persons";
 
 // GET all the people from the db
 const getAll = () => {
