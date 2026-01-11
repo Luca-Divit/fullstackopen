@@ -1,0 +1,16 @@
+{
+  "name": "phonebook",
+  "version": "1.0.0",
+  "description": "Resftul API for the phonebook app using express library ",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo No test yet"
+  },
+  "keywords": [
+    "Rest",
+    "API"
+  ],
+  "author": "Luca Di Vittorio",
+  "license": "ISC"
+}
