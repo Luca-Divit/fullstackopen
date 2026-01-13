@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
+    "dev": "node --watch index.js",
     "test": "echo No test yet"
   },
   "keywords": [
@@ -12,5 +13,8 @@
     "API"
   ],
   "author": "Luca Di Vittorio",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
