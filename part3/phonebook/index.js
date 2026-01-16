@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     id: "1",
@@ -39,6 +41,27 @@ app.get("/info", (req, res) => {
 
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+
+app.post("/api/persons", (req, res) => {
+  person = req.body;
+
+  if (!person.name || !person.number) {
+    return res.status(400).json({
+      error: "Content missing",
+    });
+  }
+
+  nameExists = persons.find((p) => p.name === person.name);
+  if (nameExists) {
+    return res.status(400).json({
+      error: "Name must be unique",
+    });
+  }
+
+  person.id = Math.random() * 100000000000;
+  persons.push(person);
+  res.json(person);
 });
 
 app.get("/api/persons/:id", (req, res) => {
