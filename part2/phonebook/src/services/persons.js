@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base url for all the api calls
-const baseUrl = "http://localhost:3001/api/persons";
+const baseUrl = "/api/persons";
 
 // GET all the people from the db
 const getAll = () => {

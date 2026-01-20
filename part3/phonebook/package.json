@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "test": "echo No test yet"
+    "test": "echo No test yet",
+    "build:ui": "rm -rf dist && cd ../../part2/phonebook && npm run build && cp -r dist ../../part3/phonebook",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run deploy",
+    "logs:prod": "fly:logs"
   },
   "keywords": [
     "Rest",
@@ -15,7 +19,6 @@
   "author": "Luca Di Vittorio",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
     "express": "^5.2.1",
     "morgan": "^1.10.1"
   },
