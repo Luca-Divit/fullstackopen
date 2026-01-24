@@ -6,11 +6,9 @@ if (process.argv.length < 3) {
 }
 
 const password = process.argv[2];
-
 const url = `mongodb+srv://dbuser:${password}@cluster0.lru0dfz.mongodb.net/?appName=Cluster0`;
 
 mongoose.set("strictQuery", false);
-
 mongoose.connect(url, { family: 4 });
 
 const personSchema = new mongoose.Schema({
@@ -33,9 +31,7 @@ if (process.argv.length === 5) {
     console.log(`added ${name} number ${number} to phonebook`);
     mongoose.connection.close();
   });
-}
-
-if (process.argv.length !== 5) {
+} else {
   Person.find({}).then((res) => {
     console.log("phonebook:");
     res.forEach((p) => console.log(`${p.name} ${p.number}`));
