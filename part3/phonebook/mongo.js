@@ -6,7 +6,7 @@ if (process.argv.length < 3) {
 }
 
 const password = process.argv[2];
-const url = `mongodb+srv://dbuser:${password}@cluster0.lru0dfz.mongodb.net/?appName=Cluster0`;
+const url = `mongodb+srv://dbuser:${password}@cluster0.lru0dfz.mongodb.net/phonebookApp?appName=Cluster0`;
 
 mongoose.set("strictQuery", false);
 mongoose.connect(url, { family: 4 });
