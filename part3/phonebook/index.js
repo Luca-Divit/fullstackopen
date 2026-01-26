@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
+const Note = require("./models/person");
 app.use(express.static("dist"));
 
 app.use(express.json());
@@ -106,7 +108,7 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(206).end();
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
