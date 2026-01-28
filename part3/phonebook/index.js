@@ -94,11 +94,39 @@ app.post("/api/persons", (req, res) => {
   });
 });
 
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res, next) => {
   const id = req.params.id;
   Person.findById(id)
-    .then((person) => res.json(person))
-    .catch(() => res.status(404).end());
+    .then((person) => {
+      if (person) {
+        res.json(person);
+      }
+      res.status(404).end();
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
+app.put("/api/persons/:id", (req, res, next) => {
+  const id = req.params.id;
+  const { name, number } = req.body;
+
+  Person.findById(id)
+    .then((person) => {
+      if (!person) {
+        res.status(404).end();
+      }
+      person.name = name;
+      person.number = number;
+
+      person.save().then((updatedPerson) => {
+        res.json(updatedPerson);
+      });
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 app.delete("/api/persons/:id", (req, res) => {
@@ -108,6 +136,15 @@ app.delete("/api/persons/:id", (req, res) => {
     .then(() => res.status(204).end())
     .catch(() => res.status(404).send("Person does not exists"));
 });
+
+const errorHandler = (err, req, res, next) => {
+  if (err.name === "CastError") {
+    res.status(400).send({ error: "Malformatted id" });
+  }
+  next(err);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
