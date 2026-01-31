@@ -10,7 +10,9 @@
     "build:ui": "rm -rf dist && cd ../../part2/phonebook && npm run build && cp -r dist ../../part3/phonebook",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "fly:logs"
+    "logs:prod": "fly:logs",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix"
   },
   "keywords": [
     "Rest",
@@ -25,6 +27,10 @@
     "morgan": "^1.10.1"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.7.10"
+    "@eslint/js": "^9.39.2",
+    "@flydotio/dockerfile": "^0.7.10",
+    "@stylistic/eslint-plugin": "^5.7.1",
+    "eslint": "^9.39.2",
+    "globals": "^17.2.0"
   }
 }
