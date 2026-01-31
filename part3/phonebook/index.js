@@ -119,7 +119,7 @@ app.put("/api/persons/:id", (req, res, next) => {
       person.name = name;
       person.number = number;
 
-      person.save().then((updatedPerson) => {
+      return person.save().then((updatedPerson) => {
         res.json(updatedPerson);
       });
     })
