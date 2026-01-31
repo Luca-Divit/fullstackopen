@@ -48,7 +48,7 @@ const App = () => {
     if (existingPerson) {
       if (
         confirm(
-          `Do you really want to update ${existingPerson.name} phone number?`
+          `Do you really want to update ${existingPerson.name} phone number?`,
         )
       ) {
         const updatedPerson = { ...existingPerson, ...nameAndNumber };
@@ -56,7 +56,7 @@ const App = () => {
           .update(updatedPerson)
           .then((personBack) => {
             setPersons(
-              persons.map((p) => (p.id !== personBack.id ? p : personBack))
+              persons.map((p) => (p.id !== personBack.id ? p : personBack)),
             );
             setNotificationMessage(`${personBack.name} has been updated`);
             setNewName("");
@@ -65,28 +65,43 @@ const App = () => {
               setNotificationMessage(null);
             }, 5000);
           })
-          .catch(() => {
-            setPersons(persons.filter((p) => p.id !== updatedPerson.id));
-            setErrorMessage(
-              `Information: ${updatedPerson.name} has been removed from the server`
-            );
-            setNewName("");
-            setNewNumber("");
-            setTimeout(() => {
-              setErrorMessage(null);
-            }, 5000);
+          .catch((err) => {
+            if (err.response.data.error.includes("Person validation failed")) {
+              setErrorMessage(err.response.data.error);
+              setTimeout(() => {
+                setErrorMessage(null);
+              }, 5000);
+            } else {
+              setPersons(persons.filter((p) => p.id !== updatedPerson.id));
+              setErrorMessage(
+                `Information: ${updatedPerson.name} has been removed from the server`,
+              );
+              setNewName("");
+              setNewNumber("");
+              setTimeout(() => {
+                setErrorMessage(null);
+              }, 5000);
+            }
           });
       }
     } else {
-      personService.create(nameAndNumber).then((addedPerson) => {
-        setPersons(persons.concat(addedPerson));
-        setNotificationMessage(`${addedPerson.name} has been created`);
-        setTimeout(() => {
-          setNotificationMessage(null);
-        }, 5000);
-        setNewName("");
-        setNewNumber("");
-      });
+      personService
+        .create(nameAndNumber)
+        .then((addedPerson) => {
+          setPersons(persons.concat(addedPerson));
+          setNotificationMessage(`${addedPerson.name} has been created`);
+          setTimeout(() => {
+            setNotificationMessage(null);
+          }, 5000);
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((err) => {
+          setErrorMessage(err.response.data.error);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        });
     }
   };
 
