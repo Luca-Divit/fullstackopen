@@ -1,0 +1,21 @@
+{
+  "name": "bloglist",
+  "version": "1.0.0",
+  "description": "blog list application, that allows users to save information about interesting blogs they have stumbled across on the internet",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node --watch index.js",
+    "test": "echo implement test"
+  },
+  "keywords": [
+    "bloglist",
+    "backend",
+    "api"
+  ],
+  "author": "Luca Di Vittorio",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.1.5"
+  }
+}
