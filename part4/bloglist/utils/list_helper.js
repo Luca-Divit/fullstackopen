@@ -10,4 +10,13 @@ const totalLikes = (blogs) => {
   return blogs.reduce((sum, blog) => sum + blog.likes, 0);
 };
 
-module.exports = { dummy, totalLikes };
+const favoriteBlog = (blogs) => {
+  if (!blogs.length) {
+    return "Please pass an array of blogs";
+  }
+
+  return blogs.reduce((prevBlog, currBlog) =>
+    prevBlog.likes >= currBlog.likes ? prevBlog : currBlog,
+  );
+};
+module.exports = { dummy, totalLikes, favoriteBlog };
