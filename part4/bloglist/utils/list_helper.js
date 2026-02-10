@@ -10,12 +10,6 @@ const totalLikes = (blogs) => {
   return blogs.reduce((sum, blog) => sum + blog.likes, 0);
 };
 
-// const favoriteBlog = (blogs) => {
-//   return blogs.reduce((prevBlog, currBlog) => {
-//     return prevBlog.likes >= currBlog.likes ? prevBlog : currBlog;
-//   });
-// };
-
 const favoriteBlog = (blogs) => {
   if (!blogs.length) {
     return "Please pass an array of blogs";
