@@ -29,7 +29,7 @@ test("the unique identifier property of the blog posts is named id", async () =>
   assert.strictEqual(blogHaveIds, true);
 });
 
-test.only("correctly store a new blog in the database", async () => {
+test("correctly store a new blog in the database", async () => {
   const newBlog = new Blog({
     title: "New blog",
     author: "New author",
