@@ -50,6 +50,25 @@ test("correctly store a new blog in the database", async () => {
   assert(contents.includes("www.newurl.com"));
 });
 
+test("if likes property is missing in request then default to 0", async () => {
+  const newBlog = new Blog({
+    title: "New blog",
+    author: "New author",
+    url: "www.newurl.com",
+  });
+
+  await api
+    .post("/api/blogs")
+    .send(newBlog)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogs = await api.get("/api/blogs");
+  const lastSavedBlog = blogs.body.slice(-1)[0];
+
+  assert.strictEqual(lastSavedBlog.likes, 0);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
