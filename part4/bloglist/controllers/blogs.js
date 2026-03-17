@@ -9,6 +9,10 @@ blogRouter.get("/", async (_req, res) => {
 blogRouter.post("/", async (req, res) => {
   const blog = new Blog(req.body._doc);
 
+  if (!blog.title || !blog.url) {
+    return res.status(400).json({ error: "Title and URL are required" });
+  }
+
   result = await blog.save();
   res.status(201).json(result);
 });
