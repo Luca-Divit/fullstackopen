@@ -30,12 +30,12 @@ test("the unique identifier property of the blog posts is named id", async () =>
 });
 
 test("correctly store a new blog in the database", async () => {
-  const newBlog = new Blog({
+  const newBlog = {
     title: "New blog",
     author: "New author",
     url: "www.newurl.com",
     likes: 0,
-  });
+  };
 
   await api
     .post("/api/blogs")
@@ -51,11 +51,11 @@ test("correctly store a new blog in the database", async () => {
 });
 
 test("if likes property is missing in request then default to 0", async () => {
-  const newBlog = new Blog({
+  const newBlog = {
     title: "New blog",
     author: "New author",
     url: "www.newurl.com",
-  });
+  };
 
   await api
     .post("/api/blogs")
