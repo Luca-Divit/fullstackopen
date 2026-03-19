@@ -1,4 +1,4 @@
-const { test, after, beforeEach } = require("node:test");
+const { test, after, beforeEach, describe } = require("node:test");
 const assert = require("node:assert");
 const mongoose = require("mongoose");
 const supertest = require("supertest");
@@ -15,67 +15,92 @@ beforeEach(async () => {
   await Promise.all(promiseArray);
 });
 
-test("return the correct number of blog posts in the json format", async () => {
-  const response = await api.get("/api/blogs");
+describe("GET blogs", () => {
+  test("return the correct number of blog posts in the json format", async () => {
+    const response = await api.get("/api/blogs");
 
-  assert.strictEqual(response.body.length, 3);
-});
-
-test("the unique identifier property of the blog posts is named id", async () => {
-  const response = await api.get("/api/blogs");
-
-  blogHaveIds = response.body.every((b) => b.id);
-
-  assert.strictEqual(blogHaveIds, true);
-});
-
-test("correctly store a new blog in the database", async () => {
-  const newBlog = new Blog({
-    title: "New blog",
-    author: "New author",
-    url: "www.newurl.com",
-    likes: 0,
+    assert.strictEqual(response.body.length, 3);
   });
 
-  await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(201)
-    .expect("Content-Type", /application\/json/);
+  test("the unique identifier property of the blog posts is named id", async () => {
+    const response = await api.get("/api/blogs");
 
-  const blogs = await api.get("/api/blogs");
-  const contents = blogs.body.map((b) => b.url);
+    blogHaveIds = response.body.every((b) => b.id);
 
-  assert.strictEqual(blogs.body.length, initialBlogs.length + 1);
-  assert(contents.includes("www.newurl.com"));
+    assert.strictEqual(blogHaveIds, true);
+  });
 });
 
-test("if likes property is missing in request then default to 0", async () => {
-  const newBlog = new Blog({
-    title: "New blog",
-    author: "New author",
-    url: "www.newurl.com",
+describe("POST blogs", () => {
+  test("correctly store a new blog in the database", async () => {
+    const newBlog = {
+      title: "New blog",
+      author: "New author",
+      url: "www.newurl.com",
+      likes: 0,
+    };
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const blogs = await api.get("/api/blogs");
+    const contents = blogs.body.map((b) => b.url);
+
+    assert.strictEqual(blogs.body.length, initialBlogs.length + 1);
+    assert(contents.includes("www.newurl.com"));
   });
 
-  await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(201)
-    .expect("Content-Type", /application\/json/);
+  test("if likes property is missing in request then default to 0", async () => {
+    const newBlog = {
+      title: "New blog",
+      author: "New author",
+      url: "www.newurl.com",
+    };
 
-  const blogs = await api.get("/api/blogs");
-  const lastSavedBlog = blogs.body.slice(-1)[0];
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
 
-  assert.strictEqual(lastSavedBlog.likes, 0);
+    const blogs = await api.get("/api/blogs");
+    const lastSavedBlog = blogs.body.slice(-1)[0];
+
+    assert.strictEqual(lastSavedBlog.likes, 0);
+  });
+
+  test("missing title or url in a post request will respond 400", async () => {
+    const newBlog = new Blog({
+      author: "New author",
+      url: "www.newurl.com",
+    });
+
+    await api.post("/api/blogs").send(newBlog).expect(400);
+  });
 });
 
-test("missing title or url in a post request will respond 400", async () => {
-  const newBlog = new Blog({
-    author: "New author",
-    url: "www.newurl.com",
+describe("DELETE blogs", () => {
+  test("delete a post by its id", async () => {
+    const blogs = await Blog.find({});
+    const { id } = blogs[0];
+
+    await api.delete(`/api/blogs/${id}`).expect(204);
   });
 
-  await api.post("/api/blogs").send(newBlog).expect(400);
+  test("missing blog id will return 404", async () => {
+    const dummyId = "63229bfba9ac2102a50000cd";
+
+    await api.delete(`/api/blogs/${dummyId}`).expect(404);
+  });
+
+  test("malformatted id returns 400", async () => {
+    const malformattedId = "malformattedId";
+
+    await api.delete(`/api/blogs/${malformattedId}`).expect(400);
+  });
 });
 
 after(async () => {
