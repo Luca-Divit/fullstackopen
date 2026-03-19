@@ -82,6 +82,27 @@ describe("POST blogs", () => {
   });
 });
 
+describe("DELETE blogs", () => {
+  test("delete a post by its id", async () => {
+    const blogs = await Blog.find({});
+    const { id } = blogs[0];
+
+    await api.delete(`/api/blogs/${id}`).expect(204);
+  });
+
+  test("missing blog id will return 404", async () => {
+    const dummyId = "63229bfba9ac2102a50000cd";
+
+    await api.delete(`/api/blogs/${dummyId}`).expect(404);
+  });
+
+  test("malformatted id returns 400", async () => {
+    const malformattedId = "malformattedId";
+
+    await api.delete(`/api/blogs/${malformattedId}`).expect(400);
+  });
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
