@@ -103,6 +103,32 @@ describe("DELETE blogs", () => {
   });
 });
 
+describe("PUT blogs", () => {
+  test.only("update a blog likes by its id", async () => {
+    const blogs = await Blog.find({});
+    const { id } = blogs[0];
+
+    const response = await api
+      .put(`/api/blogs/${id}`)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    assert.strictEqual(blogs[0].likes + 1, response.body.likes);
+  });
+
+  test.only("missing blog id will return 404", async () => {
+    const dummyId = "63229bfba9ac2102a50000cd";
+
+    await api.put(`/api/blogs/${dummyId}`).expect(404);
+  });
+
+  test.only("malformatted id returns 400", async () => {
+    const malformattedId = "malformattedId";
+
+    await api.put(`/api/blogs/${malformattedId}`).expect(400);
+  });
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
