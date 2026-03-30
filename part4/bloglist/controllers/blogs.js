@@ -30,4 +30,18 @@ blogRouter.delete("/:id", async (req, res) => {
   res.status(204).end();
 });
 
+blogRouter.put("/:id", async (req, res) => {
+  const id = req.params.id;
+  const blog = await Blog.findById(id);
+
+  if (!blog) {
+    return res.status(404).json({ error: "Blog does not exists" });
+  }
+
+  blog.likes += 1;
+
+  await blog.save();
+  res.status(201).json(blog);
+});
+
 module.exports = blogRouter;
