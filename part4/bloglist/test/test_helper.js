@@ -19,4 +19,17 @@ const initialBlogs = [
   },
 ];
 
-module.exports = initialBlogs;
+const initialUsers = [
+  {
+    username: "rootuser",
+    name: "root",
+    passwordHash: "supersecret",
+  },
+  {
+    username: "adminuser",
+    name: "admin",
+    passwordHash: "secretadmin",
+  },
+];
+
+module.exports = { initialBlogs, initialUsers };
