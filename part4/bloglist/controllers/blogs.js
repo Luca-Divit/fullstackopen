@@ -1,5 +1,6 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 blogRouter.get("/", async (_req, res) => {
   blogs = await Blog.find({});
@@ -13,6 +14,9 @@ blogRouter.post("/", async (req, res) => {
   if (!blog.title || !blog.url) {
     return res.status(400).json({ error: "Title and URL are required" });
   }
+
+  const user = await User.find({});
+  blog.user = user[0].id;
 
   result = await blog.save();
   res.status(201).json(result);
