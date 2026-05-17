@@ -22,7 +22,11 @@ userRouter.post("/", async (req, res) => {
 });
 
 userRouter.get("/", async (_req, res) => {
-  const users = await User.find({});
+  const users = await User.find({}).populate("blogs", {
+    title: 1,
+    url: 1,
+    likes: 1,
+  });
 
   res.status(200).json(users);
 });
