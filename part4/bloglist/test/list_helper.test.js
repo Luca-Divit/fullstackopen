@@ -282,3 +282,25 @@ describe("mostLikes", () => {
     assert.deepStrictEqual(result, { author: "Edsger W. Dijkstra", likes: 17 });
   });
 });
+
+describe("sanitizeToken", () => {
+  test("strips Bearer  from the auth token", () => {
+    const bearer = "Bearer fruiowfhjeioruwjhf348r098u34jr08fj34";
+
+    assert.strictEqual(
+      listHelper.sanitizeToken(bearer),
+      "fruiowfhjeioruwjhf348r098u34jr08fj34",
+    );
+  });
+
+  test("Invalid format token will return null", () => {
+    const bearer = "fruiowfhjeioruwjhf348r098u34jr08fj34";
+
+    assert.notEqual(
+      listHelper.sanitizeToken(bearer),
+      "fruiowfhjeioruwjhf348r098u34jr08fj34",
+    );
+
+    assert.strictEqual(listHelper.sanitizeToken(bearer), null);
+  });
+});

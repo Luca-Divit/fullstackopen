@@ -77,4 +77,14 @@ const mostLikes = (blogs) => {
 //   return maxAuthor;
 // };
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
+const sanitizeToken = (token) =>
+  token.startsWith("Bearer") ? token.replace("Bearer ", "") : null;
+
+module.exports = {
+  dummy,
+  totalLikes,
+  favoriteBlog,
+  mostBlogs,
+  mostLikes,
+  sanitizeToken,
+};
