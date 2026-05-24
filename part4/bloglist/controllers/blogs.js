@@ -1,6 +1,8 @@
 const blogRouter = require("express").Router();
 const Blog = require("../models/blog");
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const { sanitizeToken } = require("../utils/list_helper");
 
 blogRouter.get("/", async (_req, res) => {
   blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
@@ -8,6 +10,15 @@ blogRouter.get("/", async (_req, res) => {
 });
 
 blogRouter.post("/", async (req, res) => {
+  const token = req.headers.authorization;
+  const decodedToken = jwt.verify(sanitizeToken(token), process.env.SECRET);
+
+  if (!decodedToken) {
+    return res.status(401).json({
+      error: "Invalid auth token",
+    });
+  }
+
   const { title, author, url, likes } = req.body;
   const blog = new Blog({ title, author, url, likes });
 
@@ -15,7 +26,7 @@ blogRouter.post("/", async (req, res) => {
     return res.status(400).json({ error: "Title and URL are required" });
   }
 
-  const user = await User.findOne({});
+  const user = await User.findById(decodedToken.id);
   blog.user = user.id;
 
   savedBlog = await blog.save();
