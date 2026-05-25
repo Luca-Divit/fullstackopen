@@ -10,8 +10,7 @@ blogRouter.get("/", async (_req, res) => {
 });
 
 blogRouter.post("/", async (req, res) => {
-  const token = req.headers.authorization;
-  const decodedToken = jwt.verify(sanitizeToken(token), process.env.SECRET);
+  const decodedToken = jwt.verify(req.token, process.env.SECRET);
 
   if (!decodedToken) {
     return res.status(401).json({
