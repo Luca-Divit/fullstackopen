@@ -38,6 +38,19 @@ blogRouter.post("/", async (req, res) => {
 blogRouter.delete("/:id", async (req, res) => {
   const id = req.params.id;
   const blog = await Blog.findById(id);
+  const decodedToken = jwt.verify(req.token, process.env.SECRET);
+
+  if (!decodedToken) {
+    return res.status(401).json({
+      error: "Invalid auth token",
+    });
+  }
+
+  if (decodedToken.id !== String(blog.user)) {
+    return res.status(403).json({
+      error: "Unauthorised action by user",
+    });
+  }
 
   if (!blog) {
     return res.status(404).json({ error: "Blog does not exists" });
