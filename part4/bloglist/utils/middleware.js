@@ -1,3 +1,4 @@
+const { sanitizeToken } = require("./list_helper");
 const logger = require("./logger");
 
 const requestLogger = (request, _response, next) => {
@@ -24,8 +25,18 @@ const errorHandler = (error, _request, response, next) => {
   next(error);
 };
 
+const tokenExtractor = (request, _response, next) => {
+  const auth = request.get("authorization");
+  if (auth && auth.startsWith("Bearer")) {
+    request.token = sanitizeToken(auth);
+  }
+
+  next();
+};
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
+  tokenExtractor,
 };
