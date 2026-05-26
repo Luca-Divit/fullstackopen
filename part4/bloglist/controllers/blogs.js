@@ -3,21 +3,14 @@ const Blog = require("../models/blog");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { sanitizeToken } = require("../utils/list_helper");
+const { userExtractor } = require("../utils/middleware");
 
 blogRouter.get("/", async (_req, res) => {
   blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
   res.status(200).json(blogs);
 });
 
-blogRouter.post("/", async (req, res) => {
-  const decodedToken = jwt.verify(req.token, process.env.SECRET);
-
-  if (!decodedToken) {
-    return res.status(401).json({
-      error: "Invalid auth token",
-    });
-  }
-
+blogRouter.post("/", userExtractor, async (req, res) => {
   const { title, author, url, likes } = req.body;
   const blog = new Blog({ title, author, url, likes });
 
@@ -25,7 +18,7 @@ blogRouter.post("/", async (req, res) => {
     return res.status(400).json({ error: "Title and URL are required" });
   }
 
-  const user = await User.findById(decodedToken.id);
+  const user = await User.findById(req.user);
   blog.user = user.id;
 
   savedBlog = await blog.save();
@@ -35,18 +28,11 @@ blogRouter.post("/", async (req, res) => {
   res.status(201).json(savedBlog);
 });
 
-blogRouter.delete("/:id", async (req, res) => {
+blogRouter.delete("/:id", userExtractor, async (req, res) => {
   const id = req.params.id;
   const blog = await Blog.findById(id);
-  const decodedToken = jwt.verify(req.token, process.env.SECRET);
 
-  if (!decodedToken) {
-    return res.status(401).json({
-      error: "Invalid auth token",
-    });
-  }
-
-  if (decodedToken.id !== String(blog.user)) {
+  if (req.user !== String(blog.user)) {
     return res.status(403).json({
       error: "Unauthorised action by user",
     });
