@@ -1,5 +1,6 @@
 const { sanitizeToken } = require("./list_helper");
 const logger = require("./logger");
+const jwt = require("jsonwebtoken");
 
 const requestLogger = (request, _response, next) => {
   logger.info("Method:", request.method);
@@ -34,9 +35,23 @@ const tokenExtractor = (request, _response, next) => {
   next();
 };
 
+const userExtractor = (request, response, next) => {
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  if (!decodedToken) {
+    return res.status(401).json({
+      error: "Invalid auth token",
+    });
+  }
+
+  request.user = decodedToken.id;
+
+  next();
+};
+
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
+  userExtractor,
 };
