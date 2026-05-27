@@ -4,13 +4,22 @@ const mongoose = require("mongoose");
 const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blog");
-const { initialBlogs } = require("./test_helper");
+const User = require("../models/user");
+const { initialBlogs, initialUsers } = require("./test_helper");
 
 const api = supertest(app);
 
 beforeEach(async () => {
+  await User.deleteMany({});
+  const userObject = new User(initialUsers[0]);
+  const savedUser = await userObject.save();
+
   await Blog.deleteMany({});
-  const blogObjects = initialBlogs.map((blog) => new Blog(blog));
+  const blogObjects = initialBlogs.map((blog) => {
+    const newBlog = new Blog(blog);
+    newBlog.user = savedUser.id;
+    return newBlog;
+  });
   const promiseArray = blogObjects.map((blog) => blog.save());
   await Promise.all(promiseArray);
 });
@@ -31,7 +40,7 @@ describe("GET blogs", () => {
   });
 });
 
-describe("POST blogs", () => {
+describe.only("POST blogs", () => {
   test("correctly store a new blog in the database", async () => {
     const newBlog = {
       title: "New blog",
