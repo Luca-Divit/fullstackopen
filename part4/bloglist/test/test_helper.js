@@ -32,4 +32,9 @@ const initialUsers = [
   },
 ];
 
-module.exports = { initialBlogs, initialUsers };
+const dummyUser = {
+  username: "dummyuser",
+  name: "dummy",
+  passwordHash: "supersecret",
+};
+module.exports = { initialBlogs, initialUsers, dummyUser };

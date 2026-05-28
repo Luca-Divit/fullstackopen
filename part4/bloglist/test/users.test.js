@@ -24,7 +24,7 @@ describe("GET users", () => {
 });
 
 describe("POST users", () => {
-  test("correctly store a new blog in the database", async () => {
+  test("correctly store a new user in the database", async () => {
     const newUser = {
       username: "newUser",
       name: "New User",

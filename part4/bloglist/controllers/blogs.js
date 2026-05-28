@@ -21,7 +21,7 @@ blogRouter.post("/", userExtractor, async (req, res) => {
   const user = await User.findById(req.user);
   blog.user = user.id;
 
-  savedBlog = await blog.save();
+  const savedBlog = await blog.save();
   user.blogs = user.blogs.concat(savedBlog.id);
   await user.save();
 

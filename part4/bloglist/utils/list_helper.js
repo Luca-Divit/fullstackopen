@@ -77,7 +77,8 @@ const mostLikes = (blogs) => {
 //   return maxAuthor;
 // };
 
-const sanitizeToken = (auth) => auth.replace("Bearer ", "");
+const sanitizeToken = (auth) =>
+  auth.startsWith("Bearer") ? auth.replace("Bearer ", "") : null;
 
 module.exports = {
   dummy,
