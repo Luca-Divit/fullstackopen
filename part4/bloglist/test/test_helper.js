@@ -4,21 +4,18 @@ const initialBlogs = [
     author: "Me",
     url: "localhost",
     likes: 1,
-    user: "123",
   },
   {
     title: "My second blog",
     author: "Myself",
     url: "localhosttwo",
     likes: 2,
-    user: "456",
   },
   {
     title: "My third blog",
     author: "and I",
     url: "localhostthree",
     likes: 3,
-    user: "789",
   },
 ];
 
@@ -35,4 +32,9 @@ const initialUsers = [
   },
 ];
 
-module.exports = { initialBlogs, initialUsers };
+const dummyUser = {
+  username: "dummyuser",
+  name: "dummy",
+  passwordHash: "supersecret",
+};
+module.exports = { initialBlogs, initialUsers, dummyUser };

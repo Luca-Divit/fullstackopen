@@ -5,13 +5,14 @@ const supertest = require("supertest");
 const app = require("../app");
 const Blog = require("../models/blog");
 const User = require("../models/user");
-const { initialBlogs, initialUsers } = require("./test_helper");
+const { initialBlogs, dummyUser } = require("./test_helper");
+const jwt = require("jsonwebtoken");
 
 const api = supertest(app);
 
 beforeEach(async () => {
   await User.deleteMany({});
-  const userObject = new User(initialUsers[0]);
+  const userObject = new User(dummyUser);
   const savedUser = await userObject.save();
 
   await Blog.deleteMany({});
@@ -40,17 +41,28 @@ describe("GET blogs", () => {
   });
 });
 
-describe.only("POST blogs", () => {
+describe("POST blogs", () => {
   test("correctly store a new blog in the database", async () => {
+    const retreivedUser = await User.findOne({});
+
+    const userForToken = {
+      username: retreivedUser.username,
+      id: retreivedUser._id,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
     const newBlog = {
       title: "New blog",
       author: "New author",
       url: "www.newurl.com",
       likes: 0,
+      user: retreivedUser._id,
     };
 
     await api
       .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -63,14 +75,25 @@ describe.only("POST blogs", () => {
   });
 
   test("if likes property is missing in request then default to 0", async () => {
+    const retreivedUser = await User.findOne({});
+
+    const userForToken = {
+      username: retreivedUser.username,
+      id: retreivedUser._id,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
     const newBlog = {
       title: "New blog",
       author: "New author",
       url: "www.newurl.com",
+      user: retreivedUser.id,
     };
 
     await api
       .post("/api/blogs")
+      .set("Authorization", `Bearer ${token}`)
       .send(newBlog)
       .expect(201)
       .expect("Content-Type", /application\/json/);
@@ -82,33 +105,83 @@ describe.only("POST blogs", () => {
   });
 
   test("missing title or url in a post request will respond 400", async () => {
+    const retreivedUser = await User.findOne({});
+
+    const userForToken = {
+      username: retreivedUser.username,
+      id: retreivedUser._id,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
     const newBlog = new Blog({
       author: "New author",
       url: "www.newurl.com",
+      user: retreivedUser.id,
     });
 
-    await api.post("/api/blogs").send(newBlog).expect(400);
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(400);
   });
 });
 
 describe("DELETE blogs", () => {
   test("delete a post by its id", async () => {
+    const retreivedUser = await User.findOne({});
+
+    const userForToken = {
+      username: retreivedUser.username,
+      id: retreivedUser._id,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
     const blogs = await Blog.find({});
     const { id } = blogs[0];
 
-    await api.delete(`/api/blogs/${id}`).expect(204);
+    await api
+      .delete(`/api/blogs/${id}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(204);
   });
 
   test("missing blog id will return 404", async () => {
-    const dummyId = "63229bfba9ac2102a50000cd";
+    const retreivedUser = await User.findOne({});
 
-    await api.delete(`/api/blogs/${dummyId}`).expect(404);
+    const userForToken = {
+      username: retreivedUser.username,
+      id: retreivedUser._id,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
+    const dummyId = "";
+
+    await api
+      .delete(`/api/blogs/${dummyId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(404);
   });
 
   test("malformatted id returns 400", async () => {
+    const retreivedUser = await User.findOne({});
+
+    const userForToken = {
+      username: retreivedUser.username,
+      id: retreivedUser._id,
+    };
+
+    const token = jwt.sign(userForToken, process.env.SECRET);
+
     const malformattedId = "malformattedId";
 
-    await api.delete(`/api/blogs/${malformattedId}`).expect(400);
+    await api
+      .delete(`/api/blogs/${malformattedId}`)
+      .set("Authorization", `Bearer ${token}`)
+      .expect(400);
   });
 });
 
