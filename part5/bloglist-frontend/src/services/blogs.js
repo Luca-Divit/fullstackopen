@@ -6,4 +6,21 @@ const getAll = async () => {
   return request;
 };
 
-export default { getAll };
+const createBlog = async (title, author, url, token) => {
+  const request = axios.post(
+    baseUrl,
+    {
+      title,
+      author,
+      url,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  return request;
+};
+
+export default { getAll, createBlog };

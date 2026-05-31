@@ -48,8 +48,25 @@ const App = () => {
     setUser(null);
   };
 
-  const handleCreateBlog = (e) => {
+  const handleCreateBlog = async (e) => {
     e.preventDefault();
+    try {
+      const response = await blogService.createBlog(
+        title,
+        author,
+        url,
+        user.token,
+      );
+      setBlogs(blogs.concat(response.data));
+      setTitle("");
+      setAuthor("");
+      setUrl("");
+    } catch (error) {
+      alert(error.response.data.error);
+      setTitle("");
+      setAuthor("");
+      setUrl("");
+    }
   };
 
   return (
