@@ -10,6 +10,9 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs.data));
@@ -44,6 +47,11 @@ const App = () => {
     setUser(null);
   };
 
+  const handleCreateBlog = (e) => {
+    e.preventDefault();
+    console.log("TODO: handleCreateBlog");
+  };
+
   return (
     <div>
       <h1>BlogList App</h1>
@@ -59,6 +67,50 @@ const App = () => {
       {user && (
         <>
           <Logout user={user} handleLogout={handleLogout} />
+          <h2>Create new</h2>
+          <form onSubmit={handleCreateBlog}>
+            <label>
+              Title
+              <br />
+              <input
+                type="text"
+                value={title}
+                placeholder="blog title here"
+                onChange={({ target }) => {
+                  setTitle(target.value);
+                }}
+              />
+            </label>
+            <br />
+            <label>
+              Author
+              <br />
+              <input
+                type="text"
+                value={author}
+                placeholder="blog author"
+                onChange={({ target }) => {
+                  setAuthor(target.value);
+                }}
+              />
+            </label>
+            <br />
+            <label>
+              Url
+              <br />
+              <input
+                type="text"
+                value={url}
+                placeholder="blog url"
+                onChange={({ target }) => {
+                  setUrl(target.value);
+                }}
+              />
+            </label>
+            <br />
+            <br />
+            <button>Create blog</button>
+          </form>
           <h2>Blogs</h2>
           <ul>
             {blogs.map((blog) => (
