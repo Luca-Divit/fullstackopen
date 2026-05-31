@@ -11,7 +11,7 @@ const App = () => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => setBlogs(blogs.data));
   }, []);
 
   const handleSubmit = async (e) => {
@@ -28,6 +28,10 @@ const App = () => {
     }
   };
 
+  const handleLogout = () => {
+    console.log("Logout button clicked");
+  };
+
   return (
     <div>
       <h1>BlogList App</h1>
@@ -42,10 +46,18 @@ const App = () => {
       )}
       {user && (
         <>
-          <h2>blogs</h2>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
+          <p>
+            <i>{user.name} logged in </i>
+            <button onClick={handleLogout}>Logout</button>
+          </p>
+          <h2>Blogs</h2>
+          <ul>
+            {blogs.map((blog) => (
+              <li>
+                <Blog key={blog.id} blog={blog} />
+              </li>
+            ))}
+          </ul>
         </>
       )}
     </div>
