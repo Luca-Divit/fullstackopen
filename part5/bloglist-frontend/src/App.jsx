@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
 import blogService from "./services/blogs";
 import loginService from "./services/logins";
+import BlogForm from "./components/BlogFrom";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -49,7 +50,6 @@ const App = () => {
 
   const handleCreateBlog = (e) => {
     e.preventDefault();
-    console.log("TODO: handleCreateBlog");
   };
 
   return (
@@ -68,49 +68,15 @@ const App = () => {
         <>
           <Logout user={user} handleLogout={handleLogout} />
           <h2>Create new</h2>
-          <form onSubmit={handleCreateBlog}>
-            <label>
-              Title
-              <br />
-              <input
-                type="text"
-                value={title}
-                placeholder="blog title here"
-                onChange={({ target }) => {
-                  setTitle(target.value);
-                }}
-              />
-            </label>
-            <br />
-            <label>
-              Author
-              <br />
-              <input
-                type="text"
-                value={author}
-                placeholder="blog author"
-                onChange={({ target }) => {
-                  setAuthor(target.value);
-                }}
-              />
-            </label>
-            <br />
-            <label>
-              Url
-              <br />
-              <input
-                type="text"
-                value={url}
-                placeholder="blog url"
-                onChange={({ target }) => {
-                  setUrl(target.value);
-                }}
-              />
-            </label>
-            <br />
-            <br />
-            <button>Create blog</button>
-          </form>
+          <BlogForm
+            handleCreateBlog={handleCreateBlog}
+            title={title}
+            setTitle={setTitle}
+            author={author}
+            setAuthor={setAuthor}
+            url={url}
+            setUrl={setUrl}
+          />
           <h2>Blogs</h2>
           <ul>
             {blogs.map((blog) => (
