@@ -15,9 +15,7 @@ const LoginForm = ({
             type="text"
             value={username}
             autoComplete="username"
-            onChange={(target) => {
-              setUsername(target.value);
-            }}
+            onChange={setUsername}
           />
         </label>
         <label>
@@ -26,9 +24,7 @@ const LoginForm = ({
             type="password"
             value={password}
             autoComplete="current-password"
-            onChange={(target) => {
-              setPassword(target.value);
-            }}
+            onChange={setPassword}
           />
         </label>
         <button type="submit">Login</button>
