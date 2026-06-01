@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
+import Notification from "./components/Notification";
+import Error from "./components/Error";
 import blogService from "./services/blogs";
 import loginService from "./services/logins";
 import BlogForm from "./components/BlogFrom";
@@ -14,6 +16,8 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs.data));
@@ -27,6 +31,13 @@ const App = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setNotificationMessage(null);
+      setErrorMessage(null);
+    }, 5000);
+  }, [notificationMessage, errorMessage]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -37,7 +48,7 @@ const App = () => {
       window.localStorage.setItem("user", JSON.stringify(userObject));
       setUser(userObject);
     } catch (error) {
-      alert(error.response.data.error);
+      setErrorMessage(error.response.data.error);
       setUsername("");
       setPassword("");
     }
@@ -61,8 +72,9 @@ const App = () => {
       setTitle("");
       setAuthor("");
       setUrl("");
+      setNotificationMessage(`New blog: ${title}, by: ${author} created!`);
     } catch (error) {
-      alert(error.response.data.error);
+      setErrorMessage(error.response.data.error);
       setTitle("");
       setAuthor("");
       setUrl("");
@@ -72,6 +84,8 @@ const App = () => {
   return (
     <div>
       <h1>BlogList App</h1>
+      <Notification message={notificationMessage} />
+      <Error message={errorMessage} />
       {!user && (
         <LoginForm
           handleSubmit={handleSubmit}
