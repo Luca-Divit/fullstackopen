@@ -7,6 +7,7 @@ import Error from "./components/Error";
 import blogService from "./services/blogs";
 import loginService from "./services/logins";
 import BlogForm from "./components/BlogFrom";
+import Togglable from "./components/Togglable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -99,15 +100,17 @@ const App = () => {
         <>
           <Logout user={user} handleLogout={handleLogout} />
           <h2>Create new</h2>
-          <BlogForm
-            handleCreateBlog={handleCreateBlog}
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-          />
+          <Togglable label="Create blog">
+            <BlogForm
+              handleCreateBlog={handleCreateBlog}
+              title={title}
+              setTitle={setTitle}
+              author={author}
+              setAuthor={setAuthor}
+              url={url}
+              setUrl={setUrl}
+            />
+          </Togglable>
           <h2>Blogs</h2>
           <ul>
             {blogs.map((blog) => (
