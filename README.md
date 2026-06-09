@@ -62,5 +62,9 @@ The course covers modern web development with:
 
 ## 🔗 Resources
 
-- Course: https://fullstackopen.com/en/
-- University of Helsinki: https://www.helsinki.fi/en
+<div align="center">
+  
+| Course: https://fullstackopen.com/en/ | University of Helsinki: https://www.helsinki.fi/en |
+| --- | --- |
+
+</div>
