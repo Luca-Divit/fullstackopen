@@ -14,9 +14,6 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -60,8 +57,7 @@ const App = () => {
     setUser(null);
   };
 
-  const handleCreateBlog = async (e) => {
-    e.preventDefault();
+  const handleCreateBlog = async (title, author, url) => {
     try {
       const response = await blogService.createBlog(
         title,
@@ -70,15 +66,8 @@ const App = () => {
         user.token,
       );
       setBlogs(blogs.concat(response.data));
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-      setNotificationMessage(`New blog: ${title}, by: ${author} created!`);
     } catch (error) {
       setErrorMessage(error.response.data.error);
-      setTitle("");
-      setAuthor("");
-      setUrl("");
     }
   };
 
@@ -101,15 +90,7 @@ const App = () => {
           <Logout user={user} handleLogout={handleLogout} />
           <h2>Create new</h2>
           <Togglable label="Create blog">
-            <BlogForm
-              handleCreateBlog={handleCreateBlog}
-              title={title}
-              setTitle={setTitle}
-              author={author}
-              setAuthor={setAuthor}
-              url={url}
-              setUrl={setUrl}
-            />
+            <BlogForm handleCreateBlog={handleCreateBlog} />
           </Togglable>
           <h2>Blogs</h2>
           <ul>
