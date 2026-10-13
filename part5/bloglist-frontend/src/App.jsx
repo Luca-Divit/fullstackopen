@@ -60,7 +60,6 @@ const App = () => {
   };
 
   const handleCreateBlog = async (title, author, url) => {
-    togglableRef.current.handleVisibility();
     try {
       const response = await blogService.createBlog(
         title,
@@ -69,6 +68,8 @@ const App = () => {
         user.token,
       );
       setBlogs(blogs.concat(response.data));
+      setNotificationMessage(`New blog: ${title}, by: ${author} created!`);
+      togglableRef.current.handleVisibility();
     } catch (error) {
       setErrorMessage(error.response.data.error);
     }
