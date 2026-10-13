@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import Logout from "./components/Logout";
@@ -16,6 +16,8 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  const togglableRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs.data));
@@ -58,6 +60,7 @@ const App = () => {
   };
 
   const handleCreateBlog = async (title, author, url) => {
+    togglableRef.current.handleVisibility();
     try {
       const response = await blogService.createBlog(
         title,
@@ -89,7 +92,7 @@ const App = () => {
         <>
           <Logout user={user} handleLogout={handleLogout} />
           <h2>Create new</h2>
-          <Togglable label="Create blog">
+          <Togglable label="Create blog" ref={togglableRef}>
             <BlogForm handleCreateBlog={handleCreateBlog} />
           </Togglable>
           <h2>Blogs</h2>
