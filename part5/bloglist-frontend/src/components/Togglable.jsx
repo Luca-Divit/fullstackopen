@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useState, useImperativeHandle } from "react";
 
-const Togglable = ({ label, children }) => {
+const Togglable = ({ label, children, ref }) => {
   const [visible, setVisible] = useState(false);
+
+  const handleVisibility = () => {
+    setVisible(!visible);
+  };
+
+  useImperativeHandle(ref, () => {
+    return { handleVisibility };
+  });
 
   return (
     <div>
-      <button onClick={() => setVisible(!visible)}>{label}</button>
+      {!visible && <button onClick={handleVisibility}>{label}</button>}
       {visible && children}
     </div>
   );
