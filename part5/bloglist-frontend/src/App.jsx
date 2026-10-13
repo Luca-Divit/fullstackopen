@@ -69,7 +69,7 @@ const App = () => {
       );
       setBlogs(blogs.concat(response.data));
       setNotificationMessage(`New blog: ${title}, by: ${author} created!`);
-      togglableRef.current.handleVisibility();
+      togglableRef.current?.handleVisibility();
     } catch (error) {
       setErrorMessage(error.response.data.error);
     }
