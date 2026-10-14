@@ -97,13 +97,9 @@ const App = () => {
             <BlogForm handleCreateBlog={handleCreateBlog} />
           </Togglable>
           <h2>Blogs</h2>
-          <ul>
-            {blogs.map((blog) => (
-              <li key={blog.id}>
-                <Blog key={blog.id} blog={blog} />
-              </li>
-            ))}
-          </ul>
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
         </>
       )}
     </div>
