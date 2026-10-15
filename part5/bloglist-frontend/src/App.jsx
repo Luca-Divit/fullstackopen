@@ -78,7 +78,11 @@ const App = () => {
   const handleLike = async (blog) => {
     try {
       const response = await blogService.addLike(blog, user.token);
-      blog.likes = response.data.likes;
+      setBlogs(
+        blogs.map((b) =>
+          b.id === blog.id ? { ...b, likes: response.data.likes } : b,
+        ),
+      );
       setNotificationMessage(`Added like to ${blog.title}`);
     } catch (error) {
       setErrorMessage(error.response.data.error);
@@ -108,11 +112,7 @@ const App = () => {
           </Togglable>
           <h2>Blogs</h2>
           {blogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleLike={() => handleLike(blog)}
-            />
+            <Blog key={blog.id} blog={blog} handleLike={handleLike} />
           ))}
         </>
       )}

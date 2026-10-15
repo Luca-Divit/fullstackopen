@@ -28,7 +28,7 @@ const addLike = async (blog, token) => {
     `${baseUrl}/${blog.id}`,
     {
       ...blog,
-      likes: blog.likes++,
+      likes: blog.likes + 1,
     },
     {
       headers: {
