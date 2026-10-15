@@ -1,12 +1,18 @@
 import { useState } from "react";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const blogStyle = {
     padding: 12,
     border: "solid",
     borderWidth: 1,
+  };
+
+  const detailsStyle = {
+    display: "flex",
+    flexDirection: "column",
+    marginLeft: 12,
   };
 
   return (
@@ -16,10 +22,14 @@ const Blog = ({ blog }) => {
         {showDetails ? "hide" : "show"}
       </button>
       {showDetails && (
-        <ul>
-          <li>{blog.author}</li>
-          <li>{blog.url}</li>
-        </ul>
+        <div style={detailsStyle}>
+          <span>{blog.author}</span>
+          <span>{blog.url}</span>
+          <span>
+            {blog.likes} <button onClick={() => handleLike(blog)}>Like</button>
+          </span>
+          <span>{blog.user.username}</span>
+        </div>
       )}
     </div>
   );
