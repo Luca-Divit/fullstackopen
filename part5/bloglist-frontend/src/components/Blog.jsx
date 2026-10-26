@@ -13,6 +13,16 @@ const Blog = ({ blog, handleLike }) => {
     display: "flex",
     flexDirection: "column",
     marginLeft: 12,
+    alignItems: "flex-start",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "royalblue",
+    borderRadius: "4px",
+  };
+
+  const handleRemove = () => {
+    return window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
   };
 
   return (
@@ -29,6 +39,9 @@ const Blog = ({ blog, handleLike }) => {
             {blog.likes} <button onClick={() => handleLike(blog)}>Like</button>
           </span>
           <span>{blog.user.username}</span>
+          <button onClick={handleRemove} style={buttonStyle}>
+            remove
+          </button>
         </div>
       )}
     </div>
