@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleRemove, user }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const blogStyle = {
@@ -13,6 +13,20 @@ const Blog = ({ blog, handleLike }) => {
     display: "flex",
     flexDirection: "column",
     marginLeft: 12,
+    alignItems: "flex-start",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "royalblue",
+    borderRadius: "4px",
+  };
+
+  const isBlogOwner = user.username === blog.user.username;
+
+  const handleRemoveBlog = () => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      handleRemove(blog);
+    }
   };
 
   return (
@@ -29,6 +43,11 @@ const Blog = ({ blog, handleLike }) => {
             {blog.likes} <button onClick={() => handleLike(blog)}>Like</button>
           </span>
           <span>{blog.user.username}</span>
+          {isBlogOwner && (
+            <button onClick={handleRemoveBlog} style={buttonStyle}>
+              remove
+            </button>
+          )}
         </div>
       )}
     </div>
