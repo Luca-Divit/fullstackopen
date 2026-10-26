@@ -89,6 +89,16 @@ const App = () => {
     }
   };
 
+  const handleRemove = async (blog) => {
+    try {
+      await blogService.removeBlog(blog, user.token);
+      setBlogs(blogs.filter((b) => b.id !== blog.id));
+      setNotificationMessage(`Removed blog ${blog.title}`);
+    } catch (error) {
+      setErrorMessage(error.response.data.error);
+    }
+  };
+
   return (
     <div>
       <h1>BlogList App</h1>
@@ -114,7 +124,12 @@ const App = () => {
           {blogs
             .sort((a, b) => a.likes - b.likes)
             .map((blog) => (
-              <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                handleLike={handleLike}
+                handleRemove={handleRemove}
+              />
             ))}
         </>
       )}

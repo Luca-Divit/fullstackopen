@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, handleRemove }) => {
   const [showDetails, setShowDetails] = useState(false);
 
   const blogStyle = {
@@ -21,8 +21,11 @@ const Blog = ({ blog, handleLike }) => {
     borderRadius: "4px",
   };
 
-  const handleRemove = () => {
-    return window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
+  const handleRemoveBlog = () => {
+    window.confirm(
+      `Remove blog ${blog.title} by ${blog.author}`,
+      handleRemove(blog),
+    );
   };
 
   return (
@@ -39,7 +42,7 @@ const Blog = ({ blog, handleLike }) => {
             {blog.likes} <button onClick={() => handleLike(blog)}>Like</button>
           </span>
           <span>{blog.user.username}</span>
-          <button onClick={handleRemove} style={buttonStyle}>
+          <button onClick={handleRemoveBlog} style={buttonStyle}>
             remove
           </button>
         </div>
