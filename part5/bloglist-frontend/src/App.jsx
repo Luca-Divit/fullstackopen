@@ -129,6 +129,7 @@ const App = () => {
                 blog={blog}
                 handleLike={handleLike}
                 handleRemove={handleRemove}
+                user={user}
               />
             ))}
         </>
