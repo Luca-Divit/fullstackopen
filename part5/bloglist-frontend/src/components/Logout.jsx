@@ -6,7 +6,7 @@ const Logout = ({ user, handleLogout }) => {
         <i>Logout</i>
       </button>
     </p>
-  );
-};
+  )
+}
 
-export default Logout;
+export default Logout

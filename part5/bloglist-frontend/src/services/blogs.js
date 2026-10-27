@@ -1,10 +1,10 @@
-import axios from "axios";
-const baseUrl = "/api/blogs";
+import axios from "axios"
+const baseUrl = "/api/blogs"
 
 const getAll = async () => {
-  const request = axios.get(baseUrl);
-  return request;
-};
+  const request = axios.get(baseUrl)
+  return request
+}
 
 const createBlog = async (title, author, url, token) => {
   const request = axios.post(
@@ -19,9 +19,9 @@ const createBlog = async (title, author, url, token) => {
         Authorization: `Bearer ${token}`,
       },
     },
-  );
-  return request;
-};
+  )
+  return request
+}
 
 const addLike = async (blog, token) => {
   const request = axios.put(
@@ -35,19 +35,19 @@ const addLike = async (blog, token) => {
         Authorization: `Bearer ${token}`,
       },
     },
-  );
-  return request;
-};
+  )
+  return request
+}
 
 const removeBlog = async (blog, token) => {
-  console.log(blog);
+  console.log(blog)
 
   const request = axios.delete(`${baseUrl}/${blog.id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  });
-  return request;
-};
+  })
+  return request
+}
 
-export default { getAll, createBlog, addLike, removeBlog };
+export default { getAll, createBlog, addLike, removeBlog }

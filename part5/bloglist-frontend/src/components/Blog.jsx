@@ -1,33 +1,33 @@
-import { useState } from "react";
+import { useState } from "react"
 
 const Blog = ({ blog, handleLike, handleRemove, user }) => {
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(false)
 
   const blogStyle = {
     padding: 12,
     border: "solid",
     borderWidth: 1,
-  };
+  }
 
   const detailsStyle = {
     display: "flex",
     flexDirection: "column",
     marginLeft: 12,
     alignItems: "flex-start",
-  };
+  }
 
   const buttonStyle = {
     backgroundColor: "royalblue",
     borderRadius: "4px",
-  };
+  }
 
-  const isBlogOwner = user.username === blog.user.username;
+  const isBlogOwner = user.username === blog.user.username
 
   const handleRemoveBlog = () => {
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      handleRemove(blog);
+      handleRemove(blog)
     }
-  };
+  }
 
   return (
     <div style={blogStyle}>
@@ -51,7 +51,7 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
