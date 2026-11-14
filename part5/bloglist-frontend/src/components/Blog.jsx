@@ -31,13 +31,14 @@ const Blog = ({ blog, handleLike, handleRemove, user }) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title}{" "}
+      <span className="titleAndAuthor">
+        {blog.title} - {blog.author}{" "}
+      </span>
       <button onClick={() => setShowDetails(!showDetails)}>
         {showDetails ? "hide" : "show"}
       </button>
       {showDetails && (
-        <div style={detailsStyle}>
-          <span>{blog.author}</span>
+        <div style={detailsStyle} className="blogDetails">
           <span>{blog.url}</span>
           <span>
             {blog.likes} <button onClick={() => handleLike(blog)}>Like</button>
