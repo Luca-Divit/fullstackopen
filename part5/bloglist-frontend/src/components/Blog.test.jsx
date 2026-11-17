@@ -34,7 +34,7 @@ describe("testing blog", () => {
   });
 
   test("render url and likes when show button is clicked", async () => {
-    const user = userEvent.setup();
+    const userEventController = userEvent.setup();
 
     render(
       <Blog
@@ -53,12 +53,12 @@ describe("testing blog", () => {
 
     const showButton = screen.getByRole("button");
 
-    await user.click(showButton);
+    await userEventController.click(showButton);
 
     const urlOnceMore = screen.queryByText("blog url");
     const likesOnceMore = screen.queryByText("blog likes");
 
-    expect(urlOnceMore).toBeDefined();
-    expect(likesOnceMore).toBeDefined();
+    expect(urlOnceMore).toBeVisible();
+    expect(likesOnceMore).toBeVisible();
   });
 });
