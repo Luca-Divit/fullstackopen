@@ -1,4 +1,5 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import Blog from "./Blog";
 import { expect } from "vitest";
 
@@ -30,5 +31,34 @@ describe("testing blog", () => {
 
     expect(container.querySelector(".titleAndAuthor")).toBeVisible();
     expect(container.querySelector(".blogDetails")).toBeNull();
+  });
+
+  test("render url and likes when show button is clicked", async () => {
+    const userEventController = userEvent.setup();
+
+    render(
+      <Blog
+        blog={blog}
+        handleLike={handleLikeMock}
+        handleRemove={handleRemoveMock}
+        user={user}
+      />,
+    );
+
+    const url = screen.queryByText("blog url");
+    const likes = screen.queryByText("blog likes");
+
+    expect(url).toBeNull();
+    expect(likes).toBeNull();
+
+    const showButton = screen.getByRole("button");
+
+    await userEventController.click(showButton);
+
+    const urlOnceMore = screen.queryByText("blog url");
+    const likesOnceMore = screen.queryByText("blog likes");
+
+    expect(urlOnceMore).toBeVisible();
+    expect(likesOnceMore).toBeVisible();
   });
 });
