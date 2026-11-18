@@ -61,4 +61,27 @@ describe("testing blog", () => {
     expect(urlOnceMore).toBeVisible();
     expect(likesOnceMore).toBeVisible();
   });
+
+  test("clicking like button call the handler", async () => {
+    const userEventController = userEvent.setup();
+
+    render(
+      <Blog
+        blog={blog}
+        handleLike={handleLikeMock}
+        handleRemove={handleRemoveMock}
+        user={user}
+      />,
+    );
+
+    const showButton = screen.getByRole("button");
+    await userEventController.click(showButton);
+
+    const likesButton = screen.queryByText("Like");
+    await userEventController.click(likesButton);
+    expect(handleLikeMock).toHaveBeenCalledTimes(1);
+
+    await userEventController.click(likesButton);
+    expect(handleLikeMock).toHaveBeenCalledTimes(2);
+  });
 });
