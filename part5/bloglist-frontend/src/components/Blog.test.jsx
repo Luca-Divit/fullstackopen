@@ -62,7 +62,7 @@ describe("testing blog", () => {
     expect(likesOnceMore).toBeVisible();
   });
 
-  test.only("clicking like button call the handler", async () => {
+  test("clicking like button call the handler", async () => {
     const userEventController = userEvent.setup();
 
     render(
